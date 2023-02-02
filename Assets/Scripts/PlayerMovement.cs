@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public Transform MovingArrow;
 
     Animator anim;
+    //AimningStuff
+    public Transform ShootingArrow;
+    public Joystick ShootingJoystick;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,5 +43,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
+    }
+
+    private void LateUpdate()
+    {
+        if(Mathf.Abs(ShootingJoystick.Horizontal) > .1f || Mathf.Abs(ShootingJoystick.Vertical) > .1f)
+        {
+            if (!ShootingArrow.gameObject.activeSelf)
+                ShootingArrow.gameObject.SetActive(true);
+
+            transform.LookAt(new Vector3(ShootingJoystick.Horizontal + transform.position.x, 0, ShootingJoystick.Vertical + transform.position.z));
+
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+        }
+        else
+        {
+            if (ShootingArrow.gameObject.activeSelf)
+                ShootingArrow.gameObject.SetActive(false);
+        }
     }
 }
